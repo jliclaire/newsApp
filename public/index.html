@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>News</title>
+  </head>
+  <body>
+    <div class="container">
+      <button onclick="getTopHeadlines()">Get News</button>
+      <a href="./collection.html">View Saved News</a>
+      <div class="show-news"></div>
+    </div>
+
+    <script>
+      // Make a GET request to your API endpoint
+      async function getTopHeadlines() {
+        await fetch(
+          "https://newsapi.org/v2/top-headlines?country=us&apiKey=6249bfd8aa4246198cc38b472f829078"
+        )
+          .then(res => {
+            return res.json();
+          })
+          .then(data => {
+            const articles = data.articles;
+            // console.log(articles);
+            const showNews = document.querySelector(".show-news");
+            console.log(showNews);
+            let idNum = 1;
+            articles.forEach(article => {
+              let output = `
+          <div>
+            <div><img id="image${idNum}" class="image" src="${
+                article.urlToImage
+              }" style="width:200px; height:auto;" >
+            </div>
+            <div>
+              <div id="title${idNum}" class="title">${article.title}</div>
+              <div id="date${idNum}" class="date">${article.publishedAt}</div>
+              <div id="source-name${idNum}" class="source-name">${
+                article.source.name
+              }</div>
+              <div id="description${idNum}" class="description">${
+                article.description
+              }</div>
+              <div id="url${idNum}" class="url">${article.url}</div>
+            </div>
+            <div>
+              <button onclick="saveArticle('image${idNum}', 'date${idNum}','source-name${idNum}', 'title${idNum}','description${idNum}','url${idNum}' )">SAVE</button>
+            </div>
+          </div>
+          `;
+              showNews.insertAdjacentHTML("beforeend", output);
+              idNum++;
+            });
+          });
+      }
+
+      // write out your async calls -- you want to POST data to your API endpoint
+      //const saveArticle = document.querySelector(".save-article");
+
+      const getData = (image, date, sourceName, title, description, url) => {
+        return {
+          image,
+          date,
+          sourceName,
+          title,
+          description,
+          url
+        };
+      };
+
+      //saveArticle.addEventListener("click", async e => {
+      const saveArticle = async (
+        imageSource,
+        dateSource,
+        sourceNameSource,
+        titleSource,
+        descriptionSource,
+        urlSource
+      ) => {
+        let image = document.getElementById(imageSource).getAttribute("src");
+        let date = makeTimeString(
+          document.getElementById(dateSource).innerText
+        );
+        let sourceName = document.getElementById(sourceNameSource).innerText;
+        let title = document.getElementById(titleSource).innerText;
+        let description = document.getElementById(descriptionSource).innerText;
+        let url = document.getElementById(urlSource).innerText;
+
+        const data = getData(image, date, sourceName, title, description, url);
+        const response = await axios.post("/news", data);
+        console.log(response.data);
+      };
+
+      const makeTimeString = rawTime => {
+        // 2019-06-18T05:33:00Z"
+
+        return rawTime.slice(0, 10);
+      };
+    </script>
+  </body>
+</html>
