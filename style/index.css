@@ -4,26 +4,41 @@
   box-sizing: border-box;
 }
 
+a {
+  text-decoration: none;
+}
+
 .container {
-  width: 95%;
+  width: 100%;
 }
 
 .row {
   display: grid;
   grid-template-columns: 0.4fr 0.6fr;
-  grid-gap: 10px;
+  grid-gap: 25px;
   height: 40vh;
   margin-bottom: 10px;
+  /* background: lightblue; */
+}
+
+.image-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background: lightcoral; */
+  height: 100%;
 }
 
 .content {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .image {
-  width: 100%;
-  height: auto;
+  max-width: 90%;
+  max-height: 90%;
+  text-align: center;
 }
 
 .date,
@@ -38,8 +53,17 @@
   font-weight: bold;
 }
 
-.far {
+.far,
+.fas {
   cursor: pointer;
+}
+
+.fas-star {
+  display: none;
+}
+
+.star-color {
+  color: red;
 }
 
 /* collection css */

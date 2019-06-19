@@ -15,7 +15,8 @@
   </head>
   <body>
     <div class="container">
-      <button onclick="getTopHeadlines()">Get News</button>
+      <h1>Top Headlines</h1>
+      <!-- <button onclick="getTopHeadlines()">Get News</button> -->
       <a href="./collection.html">View Saved News</a>
       <div class="show-news"></div>
     </div>
@@ -37,15 +38,24 @@
             articles.forEach(article => {
               let output = `
           <div class="row">
-            <div><img class="image" src="${article.urlToImage}">
+            <div class="image-col"><img class="image" src="${
+              article.urlToImage
+            }">
             </div>
             <div class="content">
               <div class="title">${article.title}</div>
               <div class="date">${article.publishedAt.slice(0, 10)}</div>
               <div class="source-name">Source: ${article.source.name}</div>
               <div class="description">${article.description}</div>
-              <a class="url" href="${article.url}">Read dMore</a>
-              <i class="far fa-star" onclick="saveArticle(this)"></i>
+              <a class="url" href="${article.url}" target="_blank">Read More</a>
+              <div class="icon">
+                <div class="far-star">
+                  <i class="far fa-star" onclick="saveArticle(this)"></i>
+                </div>
+                <div class="fas-star">
+                  <i class="fas fa-star" onclick="unsaveArticle(this)"></i>
+                </div>
+              </div>
             </div>
           </div>
           `;
@@ -54,7 +64,7 @@
           });
       }
 
-      // getTopHeadlines();
+      getTopHeadlines();
       // <i class="fas fa-star"></i>
       // async calls to POST data to API endpoint
       const getData = (image, date, sourceName, title, description, url) => {
@@ -69,21 +79,19 @@
       };
 
       const saveArticle = async source => {
-        let image = source.parentElement.parentElement
-          .querySelector(".image")
-          .getAttribute("src");
-        let date = source.parentElement.parentElement.querySelector(".date")
-          .innerText;
-        let sourceName = source.parentElement.parentElement.querySelector(
-          ".source-name"
-        ).innerText;
-        let title = source.parentElement.parentElement.querySelector(".title")
-          .innerText;
-        let description = source.parentElement.parentElement.querySelector(
-          ".description"
-        ).innerText;
-        let url = source.parentElement.parentElement.querySelector(".url")
-          .innerText;
+        const parentDiv =
+          source.parentElement.parentElement.parentElement.parentElement;
+
+        //toggle star icon
+        parentDiv.querySelector(".fa-star").classList.toggle("star-color");
+
+        //get data from each element
+        let image = parentDiv.querySelector(".image").getAttribute("src");
+        let date = parentDiv.querySelector(".date").innerText;
+        let sourceName = parentDiv.querySelector(".source-name").innerText;
+        let title = parentDiv.querySelector(".title").innerText;
+        let description = parentDiv.querySelector(".description").innerText;
+        let url = parentDiv.querySelector(".url").getAttribute("href");
 
         const data = getData(image, date, sourceName, title, description, url);
         const response = await axios.post("/news", data);

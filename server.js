@@ -29,7 +29,7 @@ mongoose
 // GET request
 app.get("/collection", async (req, res) => {
   try {
-    const allArticles = await News.find();
+    const allArticles = await News.find().sort({ _id: -1 });
     return res.json(allArticles);
   } catch (error) {
     console.log(error);
@@ -58,9 +58,7 @@ app.post("/news", async (req, res) => {
 //DELETE request
 app.delete("/news/:title", async (req, res) => {
   try {
-    console.log(req.params);
     const { title } = req.params;
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@" + title);
     const findArticle = await News.findOneAndDelete({ title });
     if (!findArticle) {
       return res.send(`No article found`);

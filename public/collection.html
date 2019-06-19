@@ -16,6 +16,7 @@
   <body>
     <div class="container">
       <h1>My Collections</h1>
+      <a href="./index.html">Go To Top Headlines</a>
       <div class="show-news"></div>
     </div>
     <script>
@@ -27,14 +28,18 @@
             articles.forEach(article => {
               let output = `
               <div class="row">
-                <div><img class="image" src="${article.image}">
+                <div class="image-col"><img class="image" src="${
+                  article.image
+                }">
                 </div>
                 <div class="content">
                   <div class="title">${article.title}</div>
                   <div class="date">${article.date}</div>
                   <div class="source-name">Source: ${article.sourceName}</div>
                   <div class="description">${article.description}</div>
-                  <a class="url" href="${article.url}">Read More</a>
+                  <a class="url" href="${
+                    article.url
+                  }" target="_blank">Read More</a>
                   <i class="far fa-trash-alt" onclick="deleteArticle(this)"></i>
                 </div>
               </div>
@@ -44,22 +49,15 @@
           });
       };
 
-      const getData = title => {
-        return {
-          title
-        };
-      };
-
+      //delete one collected article
       const deleteArticle = async source => {
         let title = source.parentElement.querySelector(".title").innerText;
-        const data = getData(title);
         const response = await axios.delete("/news/" + title);
         if (response.status === 200) {
           const removeDiv = source.parentElement.parentElement;
           removeDiv.parentNode.removeChild(removeDiv);
         }
       };
-
       getSavedArticles();
     </script>
   </body>
