@@ -8,6 +8,7 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.static("public"));
+app.use(express.static("style"));
 app.use(express.json());
 // app.use(cors());
 
@@ -57,7 +58,9 @@ app.post("/news", async (req, res) => {
 //DELETE request
 app.delete("/news/:title", async (req, res) => {
   try {
+    console.log(req.params);
     const { title } = req.params;
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@" + title);
     const findArticle = await News.findOneAndDelete({ title });
     if (!findArticle) {
       return res.send(`No article found`);

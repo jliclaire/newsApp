@@ -4,15 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="http://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"
+    />
+    <script src="https://kit.fontawesome.com/4345327396.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>collection</title>
   </head>
   <body>
-    hello
+    <div class="container">
+      <h1>My Collections</h1>
+      <div class="show-news"></div>
+    </div>
     <script>
       const getSavedArticles = async () => {
         const res = await fetch("/collection")
           .then(res => res.json())
-          .then(data => console.log(data));
+          .then(articles => {
+            const collection = document.querySelector(".show-news");
+            articles.forEach(article => {
+              let output = `
+              <div class="row">
+                <div><img class="image" src="${article.image}">
+                </div>
+                <div class="content">
+                  <div class="title">${article.title}</div>
+                  <div class="date">${article.date}</div>
+                  <div class="source-name">Source: ${article.sourceName}</div>
+                  <div class="description">${article.description}</div>
+                  <a class="url" href="${article.url}">Read More</a>
+                  <i class="far fa-trash-alt" onclick="deleteArticle(this)"></i>
+                </div>
+              </div>
+              `;
+              collection.insertAdjacentHTML("beforeend", output);
+            });
+          });
+      };
+
+      const getData = title => {
+        return {
+          title
+        };
+      };
+
+      const deleteArticle = async source => {
+        let title = source.parentElement.querySelector(".title").innerText;
+        const data = getData(title);
+        const response = await axios.delete("/news/" + title);
+        if (response.status === 200) {
+          const removeDiv = source.parentElement.parentElement;
+          removeDiv.parentNode.removeChild(removeDiv);
+        }
       };
 
       getSavedArticles();

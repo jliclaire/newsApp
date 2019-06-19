@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="index.css" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="http://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"
+    />
+    <script src="https://kit.fontawesome.com/4345327396.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>News</title>
   </head>
@@ -28,39 +34,29 @@
             // console.log(articles);
             const showNews = document.querySelector(".show-news");
             console.log(showNews);
-            let idNum = 1;
             articles.forEach(article => {
               let output = `
-          <div>
-            <div><img id="image${idNum}" class="image" src="${
-                article.urlToImage
-              }" style="width:200px; height:auto;" >
+          <div class="row">
+            <div><img class="image" src="${article.urlToImage}">
             </div>
-            <div>
-              <div id="title${idNum}" class="title">${article.title}</div>
-              <div id="date${idNum}" class="date">${article.publishedAt}</div>
-              <div id="source-name${idNum}" class="source-name">${
-                article.source.name
-              }</div>
-              <div id="description${idNum}" class="description">${
-                article.description
-              }</div>
-              <div id="url${idNum}" class="url">${article.url}</div>
-            </div>
-            <div>
-              <button onclick="saveArticle('image${idNum}', 'date${idNum}','source-name${idNum}', 'title${idNum}','description${idNum}','url${idNum}' )">SAVE</button>
+            <div class="content">
+              <div class="title">${article.title}</div>
+              <div class="date">${article.publishedAt.slice(0, 10)}</div>
+              <div class="source-name">Source: ${article.source.name}</div>
+              <div class="description">${article.description}</div>
+              <a class="url" href="${article.url}">Read dMore</a>
+              <i class="far fa-star" onclick="saveArticle(this)"></i>
             </div>
           </div>
           `;
               showNews.insertAdjacentHTML("beforeend", output);
-              idNum++;
             });
           });
       }
 
-      // write out your async calls -- you want to POST data to your API endpoint
-      //const saveArticle = document.querySelector(".save-article");
-
+      // getTopHeadlines();
+      // <i class="fas fa-star"></i>
+      // async calls to POST data to API endpoint
       const getData = (image, date, sourceName, title, description, url) => {
         return {
           image,
@@ -72,33 +68,26 @@
         };
       };
 
-      //saveArticle.addEventListener("click", async e => {
-      const saveArticle = async (
-        imageSource,
-        dateSource,
-        sourceNameSource,
-        titleSource,
-        descriptionSource,
-        urlSource
-      ) => {
-        let image = document.getElementById(imageSource).getAttribute("src");
-        let date = makeTimeString(
-          document.getElementById(dateSource).innerText
-        );
-        let sourceName = document.getElementById(sourceNameSource).innerText;
-        let title = document.getElementById(titleSource).innerText;
-        let description = document.getElementById(descriptionSource).innerText;
-        let url = document.getElementById(urlSource).innerText;
+      const saveArticle = async source => {
+        let image = source.parentElement.parentElement
+          .querySelector(".image")
+          .getAttribute("src");
+        let date = source.parentElement.parentElement.querySelector(".date")
+          .innerText;
+        let sourceName = source.parentElement.parentElement.querySelector(
+          ".source-name"
+        ).innerText;
+        let title = source.parentElement.parentElement.querySelector(".title")
+          .innerText;
+        let description = source.parentElement.parentElement.querySelector(
+          ".description"
+        ).innerText;
+        let url = source.parentElement.parentElement.querySelector(".url")
+          .innerText;
 
         const data = getData(image, date, sourceName, title, description, url);
         const response = await axios.post("/news", data);
         console.log(response.data);
-      };
-
-      const makeTimeString = rawTime => {
-        // 2019-06-18T05:33:00Z"
-
-        return rawTime.slice(0, 10);
       };
     </script>
   </body>
