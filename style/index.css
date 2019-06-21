@@ -58,12 +58,12 @@ a {
   cursor: pointer;
 }
 
-.fas-star {
-  display: none;
-}
-
 .star-color {
   color: red;
+}
+
+.icon {
+  display: flex;
 }
 
 /* collection css */

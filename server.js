@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const Twitter = require("twitter");
 // const fetch = require("node-fetch");
 // const cors = require("cors");
 const mongoose = require("mongoose");
@@ -15,7 +16,7 @@ app.use(express.json());
 //require schema
 const News = require("./models/News");
 
-const port = 3000;
+const port = 3300;
 
 // db authentication
 const mongoPROD_URI = process.env.MONGO_PROD_URI;
@@ -50,6 +51,36 @@ app.post("/news", async (req, res) => {
       date
     });
     return res.json(newArticle);
+  } catch (error) {
+    return res.json(error);
+  }
+});
+
+//POST
+//send article to Twitter
+const client = new Twitter({
+  consumer_key: "SXXcoJ7nUdorWHiPnqwQNHjaR",
+  consumer_secret: "R1F3xPTNFxZaweBdyQUSSMacyeD4zCEY0gF9TYFbyxklVXIbbB",
+  access_token_key: "1043798051670773760-3LMsPTl3BVJVSx9jeKfswVI1Dl7EqT",
+  access_token_secret: "qCaIxaY6bvSLEQDNYJSOMQktxxjMHRz5BIH5ndyvW3baY"
+});
+
+const params = { screen_name: "nodejs" };
+
+app.post("/twitter", async (req, res) => {
+  try {
+    const { url } = req.body;
+    console.log(url);
+    console.log("inside twitter route");
+    await client.post("statuses/update", { status: url }, function(
+      error,
+      source,
+      response
+    ) {
+      if (error) console.log(error.message);
+      console.log(source); // Tweet body.
+      console.log(response); // Raw response object.
+    });
   } catch (error) {
     return res.json(error);
   }
