@@ -66,6 +66,11 @@ a {
   display: flex;
 }
 
+.tweet-icon,
+.fb-share-button {
+  padding-left: 30px;
+}
+
 /* collection css */
 h1 {
   text-align: center;

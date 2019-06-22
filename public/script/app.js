@@ -27,6 +27,9 @@ async function getTopHeadlines() {
           <div class="tweet-icon">
             <a href="https://twitter.com/JINGLI11074891" target="_blank" class="tweet"><i class="fab fa-twitter" onclick="sendTweet(this)"></i>Tweet This</a>
           </div>
+          <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=${
+            article.url
+          }" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook-square"></i>Share</a></div>
         </div>
       </div>
     </div>
