@@ -77,18 +77,7 @@ const saveArticle = async source => {
 const sendTweet = async source => {
   const parentDiv =
     source.parentElement.parentElement.parentElement.parentElement;
-
-  //toggle star icon
   parentDiv.querySelector(".tweet").innerText = "tweeted";
-
-  //get data from each element
-  // let image = parentDiv.querySelector(".image").getAttribute("src");
-  // let date = parentDiv.querySelector(".date").innerText;
-  // let sourceName = parentDiv.querySelector(".source-name").innerText;
-  // let title = parentDiv.querySelector(".title").innerText;
-  // let description = parentDiv.querySelector(".description").innerText;
   let url = parentDiv.querySelector(".url").getAttribute("href");
-  console.log(url);
-  // const data = getData(image, date, sourceName, title, description, url);
   await axios.post("/twitter", { url });
 };

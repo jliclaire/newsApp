@@ -59,10 +59,10 @@ app.post("/news", async (req, res) => {
 //POST
 //send article to Twitter
 const client = new Twitter({
-  consumer_key: "SXXcoJ7nUdorWHiPnqwQNHjaR",
-  consumer_secret: "R1F3xPTNFxZaweBdyQUSSMacyeD4zCEY0gF9TYFbyxklVXIbbB",
-  access_token_key: "1043798051670773760-3LMsPTl3BVJVSx9jeKfswVI1Dl7EqT",
-  access_token_secret: "qCaIxaY6bvSLEQDNYJSOMQktxxjMHRz5BIH5ndyvW3baY"
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET_KEY,
+  access_token_key: process.env.ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET
 });
 
 const params = { screen_name: "nodejs" };
