@@ -27,5 +27,3 @@ npm install
 ```
 
 **To run this application, a .env file needs to be setup in the root directory with the authentication credentials.**
-
-app running on http:localhost//3300
